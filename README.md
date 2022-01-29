@@ -46,7 +46,7 @@ as it doesn't include any sensitive information, and it cannot be used by other 
 
 Example VC with an ITT:
 
-```json
+```jsonc
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1"
@@ -58,9 +58,11 @@ Example VC with an ITT:
     "id": "did:example:sample-subject",
     "name": "Example",
     "description": "This is an example",
-    "itt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXhhbXBsZTpzYW1wbGUtZGVsZWdhdGUtaXNzdWVyIiwiY3JlZGVudGlhbFR5cGUiOiJFeGFtcGxlQ3JlZGVudGlhbCIsImlhdCI6IjIwMjItMDEtMDFUMTI6MDA6MDBaIiwiZXhwIjoiMjAyMi0xMi0yNFQxMjowMDowMFoifQ.kvdjH97lyiFKHhmdmYSbgcoS6FAHK30cKfApJ69Luk0"
+    "itt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
   },
-  "proof": {}
+  "proof": {
+    // Proof details left out for brevity
+  }
 }
 ```
 
@@ -68,6 +70,7 @@ The decoded payload in the `itt` attribute:
 
 ```json
 {
+  "iss": "did:example:sample-root-issuer",
   "sub": "did:example:sample-delegate-issuer",
   "credentialType": "ExampleCredential",
   "iat": "2022-01-01T12:00:00Z",
@@ -79,10 +82,11 @@ The decoded payload in the `itt` attribute:
 
 The verifier can verify that the issuer of the VC is trusted with the following steps:
 
-1. Validate the JWT signature using key information from the RI
-2. Check that the `sub` claim matches the DID of the DI
-3. Check that the JWT was valid at the time when the VC was issued
-4. Check that the `credentialType` claim matches the VC type
+1. Resikve JWT issuer public keys based on the DID in the `iss` claim
+2. Validate the JWT signature
+3. Check that the `sub` claim matches the DID of the DI
+4. Check that the JWT was valid at the time when the VC was issued
+5. Check that the `credentialType` claim matches the VC type
 
 ## Considerations
 
